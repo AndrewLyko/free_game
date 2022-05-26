@@ -3,7 +3,9 @@ import GameList from "../GameList/GameList";
 
 function HomeComponent() {
     return (
+        <>
         <GameList/>
+        </>
     );
 }
 

@@ -1,4 +1,5 @@
 .idea
+src/hooks/constants.js
 src/components/constants.js
 # dependencies
 /node_modules

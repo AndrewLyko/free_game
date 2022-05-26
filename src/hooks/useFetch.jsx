@@ -1,16 +1,23 @@
-import React, {useEffect, useState} from 'react';
+import  {useEffect, useState} from 'react';
 import axios from "axios";
-import {API_HOST, API_KEY} from "../components/constants";
+import {API_HOST, API_KEY} from "./constants";
 
 const localCache = {}
 
 
-function UseFetch({platform, sortBy, genre, tags}) {
+function useFetch({platform, sortBy, genre, tags}) {
     const [games, setGames] = useState([])
 
     useEffect(() => {
+
+        if (!localCache[`${platform}${sortBy}${genre}${tags}`]) {
+            getData();
+        } else {
+            setGames(localCache[`${platform}${sortBy}${genre}${tags}`]);
+        }
+
         getData();
-    }, [])
+    }, [platform, sortBy, genre, tags])
 
     function getData() {
         axios.get('/games', {
@@ -28,7 +35,8 @@ function UseFetch({platform, sortBy, genre, tags}) {
 
         }).then(response => {
             if (response.data.status !== 0) {
-                setGames(response.data)
+                localCache[`${platform}${sortBy}${genre}${tags}`] = response.data
+                setGames(localCache[`${platform}${sortBy}${genre}${tags}`])
             } else {
                 setGames([])
             }
@@ -40,4 +48,4 @@ function UseFetch({platform, sortBy, genre, tags}) {
     return {games};
 }
 
-export default UseFetch;
+export default useFetch;
