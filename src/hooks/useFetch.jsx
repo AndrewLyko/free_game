@@ -2,10 +2,10 @@ import React, {useEffect, useState} from 'react';
 import axios from "axios";
 import {API_HOST, API_KEY} from "../components/constants";
 
-const localCache= {}
+const localCache = {}
 
 
-function UseFetch() {
+function UseFetch({platform, sortBy, genre, tags}) {
     const [games, setGames] = useState([])
 
     useEffect(() => {
@@ -18,7 +18,14 @@ function UseFetch() {
             headers: {
                 'X-RapidAPI-Host': API_HOST,
                 'X-RapidAPI-Key': API_KEY
+            },
+            params: {
+                platform,
+                category: genre,
+                "sort-by": sortBy,
+                tags
             }
+
         }).then(response => {
             if (response.data.status !== 0) {
                 setGames(response.data)
